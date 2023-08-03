@@ -1,7 +1,11 @@
+import os
+import uuid
+
 from django.conf import settings
-from django.contrib.auth import user_logged_out, user_logged_in
+from django.contrib.auth import user_logged_in
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
+from django.utils.text import slugify
 from django.utils.translation import gettext as _
 
 
@@ -37,6 +41,13 @@ class UserManager(BaseUserManager):
         return self._create_user(email, password, **extra_fields)
 
 
+def movie_image_file_path(instance, filename):
+    _, extension = os.path.splitext(filename)
+    filename = f"{slugify(instance.full_name)}-{uuid.uuid4()}{extension}"
+
+    return os.path.join("uploads/movies/", filename)
+
+
 class User(AbstractUser):
     """User model."""
 
@@ -44,7 +55,6 @@ class User(AbstractUser):
     email = models.EmailField(_("email address"), unique=True)
     first_name = models.CharField(max_length=63)
     last_name = models.CharField(max_length=63)
-    # is_online = models.BooleanField(default=False)
     followers = models.ManyToManyField(
         settings.AUTH_USER_MODEL, blank=True, related_name="user_followers"
     )
@@ -52,7 +62,9 @@ class User(AbstractUser):
         settings.AUTH_USER_MODEL, blank=True, related_name="user_followings"
     )
     bio = models.TextField(blank=True)
-    avatar = models.ImageField(blank=True)
+    avatar = models.ImageField(
+        null=True, blank=True, upload_to=movie_image_file_path
+    )
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
