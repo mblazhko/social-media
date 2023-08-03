@@ -80,3 +80,6 @@ class User(AbstractUser):
         if user_logged_in:
             return True
         return False
+
+    def __str__(self):
+        return self.full_name
