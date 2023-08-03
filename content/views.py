@@ -9,6 +9,7 @@ from user.permissions import IsOwnerOrReadOnly
 
 
 class PostViewSet(viewsets.ModelViewSet):
+    queryset = Post.objects.all()
     serializer_class = PostSerializer
     permission_classes = [
         IsOwnerOrReadOnly,
@@ -25,7 +26,7 @@ class PostViewSet(viewsets.ModelViewSet):
         created_at = self.request.query_params.get("created_at")
         hashtags = self.request.query_params.get("hashtags")
 
-        queryset = Post.objects.all()
+        queryset = self.queryset
 
         if user.is_authenticated:
             queryset = queryset.filter(
