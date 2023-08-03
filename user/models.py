@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.contrib.auth import user_logged_out, user_logged_in
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
 from django.utils.translation import gettext as _
@@ -43,7 +44,7 @@ class User(AbstractUser):
     email = models.EmailField(_("email address"), unique=True)
     first_name = models.CharField(max_length=63)
     last_name = models.CharField(max_length=63)
-    is_online = models.BooleanField(default=False)
+    # is_online = models.BooleanField(default=False)
     followers = models.ManyToManyField(
         settings.AUTH_USER_MODEL, blank=True, related_name="user_followers"
     )
@@ -61,3 +62,9 @@ class User(AbstractUser):
     @property
     def full_name(self):
         return f"{self.first_name} {self.last_name}"
+
+    @property
+    def is_online(self):
+        if user_logged_in:
+            return True
+        return False

@@ -59,6 +59,6 @@ class UserDetailSerializer(UserSerializer):
             "is_online",
             "full_name",
             "followers",
-            "follow",
+            "followings",
             "bio",
         )
