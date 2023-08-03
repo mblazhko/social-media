@@ -1,7 +1,7 @@
 from django.conf import settings
+from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
 from django.utils.translation import gettext as _
-from django.contrib.auth.models import AbstractUser, BaseUserManager
 
 
 class UserManager(BaseUserManager):
@@ -44,8 +44,12 @@ class User(AbstractUser):
     first_name = models.CharField(max_length=63)
     last_name = models.CharField(max_length=63)
     is_online = models.BooleanField(default=False)
-    followers = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True)
-    followings = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True)
+    followers = models.ManyToManyField(
+        settings.AUTH_USER_MODEL, blank=True, related_name="user_followers"
+    )
+    followings = models.ManyToManyField(
+        settings.AUTH_USER_MODEL, blank=True, related_name="user_followings"
+    )
     bio = models.TextField(blank=True)
     avatar = models.ImageField(blank=True)
 
