@@ -1,3 +1,7 @@
 from django.contrib import admin
 
-# Register your models here.
+from content.models import Post, Tag, PostImage
+
+admin.site.register(Post)
+admin.site.register(Tag)
+admin.site.register(PostImage)
