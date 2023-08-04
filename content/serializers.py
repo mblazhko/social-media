@@ -52,9 +52,6 @@ class PostListSerializer(PostSerializer):
     likes_count = serializers.IntegerField(
         source="liked_by.count", read_only=True
     )
-    hashtags = serializers.SlugRelatedField(
-        read_only=True, many=True, slug_field="name"
-    )
     owner = serializers.CharField(read_only=True, source="owner.full_name")
 
     class Meta:
