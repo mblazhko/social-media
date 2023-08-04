@@ -6,10 +6,6 @@ from django.db import models
 from django.utils.text import slugify
 
 
-class Tag(models.Model):
-    name = models.CharField(max_length=255)
-
-
 class Post(models.Model):
     owner = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -20,7 +16,7 @@ class Post(models.Model):
     liked_by = models.ManyToManyField(
         settings.AUTH_USER_MODEL, related_name="liked_posts"
     )
-    hashtags = models.ManyToManyField(Tag, related_name="posts")
+    hashtags = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

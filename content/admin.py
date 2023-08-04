@@ -1,7 +1,6 @@
 from django.contrib import admin
 
-from content.models import Post, Tag, PostImage
+from content.models import Post, PostImage
 
 admin.site.register(Post)
-admin.site.register(Tag)
 admin.site.register(PostImage)

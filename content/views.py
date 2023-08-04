@@ -15,10 +15,6 @@ class PostViewSet(viewsets.ModelViewSet):
         IsOwnerOrReadOnly,
     ]
 
-    @staticmethod
-    def _params_to_ints(qs) -> list[int]:
-        return [int(str_id) for str_id in qs.split(",")]
-
     def get_serializer_class(self):
         if self.action == "list":
             return PostListSerializer
@@ -48,8 +44,7 @@ class PostViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(created_at__date=date)
 
         if hashtags:
-            hashtags_ids = self._params_to_ints(hashtags)
-            queryset = queryset.filter(hashtags__id__in=hashtags_ids)
+            queryset = queryset.filter(hashtags__iconsist=hashtags)
 
         return queryset.distinct()
 

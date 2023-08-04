@@ -1,12 +1,6 @@
 from rest_framework import serializers
 
-from content.models import Tag, PostImage, Post
-
-
-class TagSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Tag
-        fields = ("id", "name")
+from content.models import PostImage, Post
 
 
 class PostImageSerializer(serializers.ModelSerializer):
@@ -22,8 +16,10 @@ class PostSerializer(serializers.ModelSerializer):
         write_only=True,
         required=False,
     )
-    hashtags = TagSerializer(many=True, required=False)
     created_at = serializers.DateTimeField(read_only=True)
+    liked_by = serializers.SlugRelatedField(
+        read_only=True, many=True, slug_field="full_name"
+    )
 
     class Meta:
         model = Post
@@ -40,7 +36,6 @@ class PostSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         uploaded_images = validated_data.pop("uploaded_images", None)
         liked_by_data = validated_data.pop("liked_by", [])
-        hashtags_data = validated_data.pop("hashtags", [])
 
         post = Post.objects.create(**validated_data)
 
@@ -49,7 +44,6 @@ class PostSerializer(serializers.ModelSerializer):
                 PostImage.objects.create(post=post, image=image)
 
         post.liked_by.set(liked_by_data)
-        post.hashtags.set(hashtags_data)
 
         return post
 
