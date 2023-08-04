@@ -39,7 +39,7 @@ class ManageUserView(
     mixins.RetrieveModelMixin, mixins.UpdateModelMixin, viewsets.GenericViewSet
 ):
     serializer_class = UserDetailSerializer
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated, IsOwnerOrReadOnly)
 
     def get_serializer_class(self):
         if self.action == "retrieve":
@@ -72,7 +72,7 @@ class ManageUserView(
 
 class UserViewSet(ReadOnlyModelViewSet):
     serializer_class = UserListSerializer
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated, IsOwnerOrReadOnly)
     queryset = get_user_model().objects.all()
 
     def get_queryset(self):
