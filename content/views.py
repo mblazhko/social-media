@@ -4,7 +4,7 @@ from django.db.models import Q
 from rest_framework import viewsets
 
 from content.models import Post
-from content.serializers import PostSerializer
+from content.serializers import PostSerializer, PostListSerializer
 from user.permissions import IsOwnerOrReadOnly
 
 
@@ -19,6 +19,11 @@ class PostViewSet(viewsets.ModelViewSet):
     def _params_to_ints(qs) -> list[int]:
         return [int(str_id) for str_id in qs.split(",")]
 
+    def get_serializer_class(self):
+        if self.action == "list":
+            return PostListSerializer
+        return PostSerializer
+
     def get_queryset(self):
         user = self.request.user
         first_name = self.request.query_params.get("first_name")
@@ -30,7 +35,7 @@ class PostViewSet(viewsets.ModelViewSet):
 
         if user.is_authenticated:
             queryset = queryset.filter(
-                Q(owner=user) | Q(owner__in=user.following.all())
+                Q(owner=user) | Q(owner__in=user.followings.all())
             )
 
         if first_name and last_name:

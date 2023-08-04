@@ -20,8 +20,10 @@ class PostSerializer(serializers.ModelSerializer):
     uploaded_images = serializers.ListField(
         child=serializers.ImageField(allow_empty_file=False, use_url=False),
         write_only=True,
+        required=False,
     )
-    hashtags = TagSerializer(many=True, read_only=True)
+    hashtags = TagSerializer(many=True, required=False)
+    created_at = serializers.DateTimeField(read_only=True)
 
     class Meta:
         model = Post
@@ -36,10 +38,40 @@ class PostSerializer(serializers.ModelSerializer):
         )
 
     def create(self, validated_data):
-        uploaded_images = validated_data.pop("uploaded_images")
-        product = Post.objects.create(**validated_data)
+        uploaded_images = validated_data.pop("uploaded_images", None)
+        liked_by_data = validated_data.pop("liked_by", [])
+        hashtags_data = validated_data.pop("hashtags", [])
 
-        for image in uploaded_images:
-            PostImage.objects.create(product=product, image=image)
+        post = Post.objects.create(**validated_data)
 
-        return product
+        if uploaded_images:
+            for image in uploaded_images:
+                PostImage.objects.create(post=post, image=image)
+
+        post.liked_by.set(liked_by_data)
+        post.hashtags.set(hashtags_data)
+
+        return post
+
+
+class PostListSerializer(PostSerializer):
+    likes_count = serializers.IntegerField(
+        source="liked_by.count", read_only=True
+    )
+    hashtags = serializers.SlugRelatedField(
+        read_only=True, many=True, slug_field="name"
+    )
+    owner = serializers.CharField(read_only=True, source="owner.full_name")
+
+    class Meta:
+        model = Post
+        fields = (
+            "id",
+            "owner",
+            "content",
+            "created_at",
+            "liked_by",
+            "likes_count",
+            "hashtags",
+            "images",
+        )
