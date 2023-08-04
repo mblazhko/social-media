@@ -47,3 +47,6 @@ class PostViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(hashtags__id__in=hashtags_ids)
 
         return queryset.distinct()
+
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
