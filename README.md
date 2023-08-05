@@ -54,6 +54,7 @@ The project exposes several API endpoints for user registration, authentication,
 7. Post Creation: POST /api/posts/
 8. Post Update: PUT/PATCH /api/posts/{post_id}/
 9. Post Deletion: DELETE /api/posts/{post_id}/
+10. Swagger documentation: api/doc/swagger/
 
 ## Environment Variables
 
