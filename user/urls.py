@@ -1,3 +1,4 @@
+from django.contrib.auth.views import LogoutView
 from django.urls import path
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
@@ -27,10 +28,11 @@ urlpatterns = [
         name="manage",
     ),
     path("token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
-    path("users/", UserViewSet.as_view({"get": "list"}), name="users"),
+    path("token/logout/", LogoutView.as_view(), name="token_logout"),
+    path("users/", UserViewSet.as_view({"get": "list"}), name="user-list"),
     path(
         "users/<int:pk>/",
         UserViewSet.as_view({"get": "retrieve"}),
-        name="user",
+        name="user-detail",
     ),
 ]
