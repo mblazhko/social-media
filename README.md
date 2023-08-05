@@ -46,9 +46,10 @@ The project exposes several API endpoints for user registration, authentication,
 
 1. User Registration: POST /api/user/register/
 2. User Login: POST /api/token/
-3. User Profile: GET/PUT/PATCH /api/user/me/
-4. Post List: GET /api/posts/
-5. Post Detail: GET /api/posts/{post_id}/
-6. Post Creation: POST /api/posts/
-7. Post Update: PUT/PATCH /api/posts/{post_id}/
-8. Post Deletion: DELETE /api/posts/{post_id}/
+3. User Logout: POST /api/token/logout
+4. User Profile: GET/PUT/PATCH /api/user/me/
+5. Post List: GET /api/posts/
+6. Post Detail: GET /api/posts/{post_id}/
+7. Post Creation: POST /api/posts/
+8. Post Update: PUT/PATCH /api/posts/{post_id}/
+9. Post Deletion: DELETE /api/posts/{post_id}/
