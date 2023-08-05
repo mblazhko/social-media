@@ -1,4 +1,3 @@
-from django.contrib.auth.views import LogoutView
 from django.urls import path
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
@@ -9,6 +8,7 @@ from user.views import (
     CreateUserView,
     ManageUserView,
     UserViewSet,
+    LogoutView,
 )
 
 app_name = "user"
