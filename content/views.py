@@ -20,6 +20,10 @@ class PostViewSet(viewsets.ModelViewSet):
             return PostListSerializer
         return PostSerializer
 
+    @staticmethod
+    def _params_to_ints(qs) -> list[int]:
+        return [int(str_id) for str_id in qs.split(",")]
+
     def get_queryset(self):
         user = self.request.user
         first_name = self.request.query_params.get("first_name")
@@ -35,16 +39,18 @@ class PostViewSet(viewsets.ModelViewSet):
             )
 
         if first_name and last_name:
-            queryset = queryset.filter(
-                Q(owner__first_name=first_name) & Q(owner__last_name=last_name)
-            )
+            queryset = queryset.filter(owner__first_name=first_name)
+
+        if last_name:
+            queryset = queryset.filter(owner__last_name=last_name)
 
         if created_at:
             date = datetime.strptime(created_at, "%Y-%m-%d").date()
             queryset = queryset.filter(created_at__date=date)
 
         if hashtags:
-            queryset = queryset.filter(hashtags__iconsist=hashtags)
+            hashtag_ids = self._params_to_ints(hashtags)
+            queryset = queryset.filter(hashtags__id__in=hashtag_ids)
 
         return queryset.distinct()
 

@@ -1,6 +1,12 @@
 from rest_framework import serializers
 
-from content.models import PostImage, Post
+from content.models import PostImage, Post, Hashtag
+
+
+class HashtagSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Hashtag
+        fields = ("id", "name")
 
 
 class PostImageSerializer(serializers.ModelSerializer):
@@ -20,6 +26,7 @@ class PostSerializer(serializers.ModelSerializer):
     liked_by = serializers.SlugRelatedField(
         read_only=True, many=True, slug_field="full_name"
     )
+    hashtags = HashtagSerializer(many=True, required=False)
 
     class Meta:
         model = Post
@@ -53,6 +60,9 @@ class PostListSerializer(PostSerializer):
         source="liked_by.count", read_only=True
     )
     owner = serializers.CharField(read_only=True, source="owner.full_name")
+    hashtags = serializers.SlugRelatedField(
+        many=True, read_only=True, slug_field="name"
+    )
 
     class Meta:
         model = Post
@@ -63,6 +73,6 @@ class PostListSerializer(PostSerializer):
             "created_at",
             "liked_by",
             "likes_count",
-            "hashtags",
             "images",
+            "hashtags",
         )
