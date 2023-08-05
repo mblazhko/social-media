@@ -6,6 +6,7 @@ This is a Django-based content management project that allows users to create po
 1. [Installation](#Installation)
 2. [Usage](#usage)
 3. [API Endpoints](#api-endpoints)
+4. [Environment Variables](#environment-variables)
 
 ## Installation
 
@@ -53,3 +54,11 @@ The project exposes several API endpoints for user registration, authentication,
 7. Post Creation: POST /api/posts/
 8. Post Update: PUT/PATCH /api/posts/{post_id}/
 9. Post Deletion: DELETE /api/posts/{post_id}/
+
+## Environment Variables
+
+The following environment variables should be set in the `.env` file:
+
+- `DJANGO_SECRET_KEY`: Your Django secret key
+
+**Note:** Before starting the project, make a copy of the `.env_sample` file and rename it to `.env`. Replace the sample values with your actual environment variable values.
