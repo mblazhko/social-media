@@ -44,11 +44,11 @@ You can use test admin user made during migration:
 ## API Endpoints
 The project exposes several API endpoints for user registration, authentication, and post management.
 
-1. User Registration: POST /api/v1/user/register/
+1. User Registration: POST /api/user/register/
 2. User Login: POST /api/token/
-3. User Profile: GET/PUT/PATCH /api/v1/user/me/
-4. Post List: GET /api/v1/posts/
-5. Post Detail: GET /api/v1/posts/{post_id}/
-6. Post Creation: POST /api/v1/posts/
-7. Post Update: PUT/PATCH /api/v1/posts/{post_id}/
-8. Post Deletion: DELETE /api/v1/posts/{post_id}/
+3. User Profile: GET/PUT/PATCH /api/user/me/
+4. Post List: GET /api/posts/
+5. Post Detail: GET /api/posts/{post_id}/
+6. Post Creation: POST /api/posts/
+7. Post Update: PUT/PATCH /api/posts/{post_id}/
+8. Post Deletion: DELETE /api/posts/{post_id}/
