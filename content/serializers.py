@@ -43,6 +43,7 @@ class PostSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         uploaded_images = validated_data.pop("uploaded_images", None)
         liked_by_data = validated_data.pop("liked_by", [])
+        hashtags_data = validated_data.pop("hashtags", [])
 
         post = Post.objects.create(**validated_data)
 
@@ -51,6 +52,12 @@ class PostSerializer(serializers.ModelSerializer):
                 PostImage.objects.create(post=post, image=image)
 
         post.liked_by.set(liked_by_data)
+
+        for hashtag_data in hashtags_data:
+            hashtag, _ = Hashtag.objects.get_or_create(
+                name=hashtag_data["name"]
+            )
+            post.hashtags.add(hashtag)
 
         return post
 

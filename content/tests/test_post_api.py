@@ -126,8 +126,4 @@ class AuthenticatedPostApiTests(TestCase):
 
         self.assertEqual(res.status_code, status.HTTP_201_CREATED)
         for key in payload:
-            if key == "hashtags":
-                hashtags_ids = list(post.hashtags.values_list("id", flat=True))
-                self.assertEqual(payload[key], hashtags_ids)
-            else:
-                self.assertEqual(payload[key], getattr(post, key))
+            self.assertEqual(payload[key], getattr(post, key))
