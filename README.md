@@ -15,8 +15,8 @@ To set up the project, follow these steps:
 1. Clone the repository:
 
     ```bash
-    git clone https://github.com/your-username/django-content-management.git
-    cd django-content-management
+    git clone https://github.com/neostyle88/social-media.git
+    cd social-media-api
 
 2. Create a virtual environment and activate it:
     ```bash
